@@ -35,55 +35,57 @@ function desenhaPC() {
 
 function movePC(dt) {
 
-    /*Atualizando atrito, sempre terá a direção contrária a velocidade*/
-    if(pc.vx < 0.01*max_speed && pc.vx > -0.01*max_speed){
-        friction = 0;
-        pc.vx = 0;
-    } else{
-        friction = -(max_speed*(pc.vx/Math.abs(pc.vx)));
-    }
-
-    pc.vx = pc.vx + (pc.ax + friction) * dt;
-    pc.x = pc.x + pc.vx * dt;
-    pc.vy = pc.vy + (pc.ay + gravity)*dt;
-
-    /*Limitando a velocidade em x*/
-    if( Math.abs(pc.vx) > max_speed){
-        pc.vx = max_speed*(pc.vx/Math.abs(pc.vx));
-    }
-
-
-    if (mapa[pc.yi + 1][pc.xi]) {
-        var foot = pc.y + pc.h / 2;
-        var top = (pc.yi + 1) * TS;
-        pc.vy = Math.min(pc.vy, Math.abs((top - foot)) / dt);
-        if (pc.vy == 0) {
-            pc.jumping = false;
+    if(!game_over){
+        /*Atualizando atrito, sempre terá a direção contrária a velocidade*/
+        if(pc.vx < 0.01*max_speed && pc.vx > -0.01*max_speed){
+            friction = 0;
+            pc.vx = 0;
+        } else{
+            friction = -(max_speed*(pc.vx/Math.abs(pc.vx)));
         }
+
+        pc.vx = pc.vx + (pc.ax + friction) * dt;
+        pc.x = pc.x + pc.vx * dt;
+        pc.vy = pc.vy + (pc.ay + gravity)*dt;
+
+        /*Limitando a velocidade em x*/
+        if( Math.abs(pc.vx) > max_speed){
+            pc.vx = max_speed*(pc.vx/Math.abs(pc.vx));
+        }
+
+
+        if (mapa[pc.yi + 1][pc.xi]) {
+            var foot = pc.y + pc.h / 2;
+            var top = (pc.yi + 1) * TS;
+            pc.vy = Math.min(pc.vy, Math.abs((top - foot)) / dt);
+            if (pc.vy == 0) {
+                pc.jumping = false;
+            }
+        }
+
+        pc.y = pc.y + pc.vy * dt;
+
+        if(pc.x < 0){
+            pc.x = 0;
+        } else if(pc.x > tela.width){
+            pc.x = tela.width;
+        }
+
+        if(pc.y < 0){
+            pc.y = 0;
+        } else if(pc.y > tela.height - TS){
+            game_over = true;
+            console.log("game OVER!");
+        }
+
+        pc.xi = Math.floor(pc.x / TS);
+        pc.yi = Math.floor(pc.y / TS);
+
+        if(pc.xi > map_collumns-1){
+            pc.xi = map_collumns-1;
+        } 
     }
 
-    pc.y = pc.y + pc.vy * dt;
-
-    if(pc.x < 0){
-        pc.x = 0;
-    } else if(pc.x > tela.width){
-        pc.x = tela.width;
-    }
-
-    if(pc.y < 0){
-        pc.y = 0;
-    } else if(pc.y > tela.height){
-        pc.y = tela.height;
-    }
-
-    pc.xi = Math.floor(pc.x / TS);
-    pc.yi = Math.floor(pc.y / TS);
-
-    if(pc.xi > map_collumns-1){
-        pc.xi = map_collumns-1;
-    }
-    if(pc.yi > map_lines-1){
-        pc.yi = map_lines-1;
-    }
+    
 
 }

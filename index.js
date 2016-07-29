@@ -1,6 +1,6 @@
 var tela = document.getElementById("tela");
 var ctx = tela.getContext("2d");
-            
+var game_over = false;
            
 var previous_key;
 
@@ -13,22 +13,24 @@ function passo() {
 }
 
 document.addEventListener("keydown", function(e) {
-    
-    switch (e.keyCode) {
-        case 37:
-            pc.ax = -4*max_speed;
-            break;
-        case 39:
-            pc.ax = 4*max_speed;
-            break;
-        case 38:
-            if (!pc.jumping && previous_key != 38 && mapa[pc.yi + 1][pc.xi]) {
-                pc.vy = -9.05*TS;
-                pc.jumping = true;
-            }
-            break;
+    if(!game_over){
+        switch (e.keyCode) {
+            case 37:
+                pc.ax = -4*max_speed;
+                break;
+            case 39:
+                pc.ax = 4*max_speed;
+                break;
+            case 38:
+                if (!pc.jumping && previous_key != 38 && mapa[pc.yi + 1][pc.xi]) {
+                    pc.vy = -9.05*TS;
+                    pc.jumping = true;
+                }
+                break;
+        }
+        previous_key = e.keyCode;    
     }
-    previous_key = e.keyCode;
+    
 });
 
 document.addEventListener("keyup", function(e) {
