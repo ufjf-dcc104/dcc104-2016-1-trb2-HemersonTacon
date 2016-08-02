@@ -6,9 +6,9 @@ var previous_key;
 
 function passo() {
     var dt = 1 / 40;
-    desenhaMapa(dt);
+    drawMap(dt);
     movePC(dt);
-    desenhaPC();
+    drawPC();
     setTimeout(passo, dt * 1000);
 }
 

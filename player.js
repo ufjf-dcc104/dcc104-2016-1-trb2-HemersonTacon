@@ -1,5 +1,8 @@
-var pc_img = new Image();
-pc_img.src = "mario.png"
+var pc_img = new ImageResources();
+pc_img.addImage("mario", "img/marioTS.png");
+
+//var pc_img = new Image();
+//pc_img.src = "mario.png"
 
 var pc = {
                 w: 16,
@@ -16,18 +19,19 @@ var pc = {
 
             }
 
-var gravity = 10*TS;
-var max_speed = 5*TS;
+var gravity = 16*TS;
+var max_speed = 4*TS;
 var friction = 0;
 
-function desenhaPC() {
+function drawPC() {
     //ctx.fillStyle = "blue";
     //ctx.fillRect(pc.x - pc.w/2, (pc.y - TS)  + Math.floor(TS_offset) - pc.h/2 , pc.w, pc.h);
-    ctx.save();
+    //ctx.save();
     //ctx.translate(pc.x, pc.y);
     //ctx.scale(-1, 1);
-    ctx.drawImage(pc_img, pc.x - pc.w/2, (pc.y - TS)  + Math.floor(TS_offset) - pc.h/2 , pc.w, pc.h);
-    ctx.restore();
+    //ctx.drawImage(pc_img, pc.x - pc.w/2, (pc.y - TS)  + Math.floor(TS_offset) - pc.h/2 , pc.w, pc.h);
+    pc_img.drawCentered2(ctx, "mario", 0, 0, 16, 32, pc.x, (pc.y - TS)  + Math.floor(TS_offset) , pc.w, pc.h)
+    //ctx.restore();
 
     ctx.strokeStyle = "red";
     ctx.strokeRect(pc.xi * TS, (pc.yi - 1) * TS + Math.floor(TS_offset), TS, TS);

@@ -4,23 +4,27 @@ var map_lines = 18, map_collumns = 28;
 tela.width = map_collumns*TS;
 tela.height = map_lines*TS;
 var TS_offset = 0, TS_offset_speed = 10;
-var bg = new Image();
-bg.src = "bg1.png";
-var bg_animation = 0;
-var tile;
-var lava = [];
-var lava_animation = 0;
-var floor = new Image();
-floor.src = "floor.png"
 
- lava[0] = new Image();
- lava[0].src = "lava0.png";
- lava[1] = new Image();
- lava[1].src = "lava1.png";
- lava[2] = new Image();
- lava[2].src = "lava2.png";
- lava[3] = new Image();
- lava[3].src = "lava3.png";
+var mapSprites = new ImageResources();
+var i=0;
+
+for(; i<3; ++i){
+    mapSprites.addImage("bg"+i, "img/bg"+i+".png");
+    mapSprites.addImage("floor"+i, "img/floor"+i+".png");
+    mapSprites.addImage("lava"+i, "img/lava"+i+".png");
+    mapSprites.addImage("spike"+i, "img/spike"+i+".png");
+}
+
+mapSprites.addImage("floor"+i, "img/floor"+i+".png");
+mapSprites.addImage("lava"+i, "img/lava"+i+".png");
+mapSprites.addImage("spike"+i, "img/spike"+i+".png");
+
+for(i=4; i<9; ++i){
+    mapSprites.addImage("floor"+i, "img/floor"+i+".png");
+}
+
+var bg_animation = 0;
+var lava_animation = 0;
 
 var mapa = [
     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -45,11 +49,13 @@ var mapa = [
 ];
 
 
-    function desenhaMapa(dt) {
-        //ctx.fillStyle = "black";
-        bg_animation += dt;
+function drawMap(dt) {
+    if(!mapSprites.isReady()){
+        //setTimeout(drawMap(dt), 0);
+    }else{
+            bg_animation += dt;
 
-        if(Math.floor(bg_animation) % 4 == 1){
+        /*if(Math.floor(bg_animation) % 4 == 1){
             bg.src = "bg2.png";
 
         } else if(Math.floor(bg_animation) % 4 == 2){
@@ -60,12 +66,11 @@ var mapa = [
 
         } else if(Math.floor(bg_animation) % 4 == 0){
             bg.src = "bg1.png";            
-        }
-        ctx.drawImage(bg, 0, 0, tela.width, tela.height);
+        }*/
+//        ctx.drawImage(bg, 0, 0, tela.width, tela.height);
+        mapSprites.draw(ctx, "bg"+(Math.floor(bg_animation) % 4 == 3 ? 1 : (Math.floor(bg_animation) % 4)), 0, 0, tela.width, tela.height);
 
         lava_animation += 4*dt;
-
-
 
         TS_offset = (TS_offset + TS_offset_speed*dt) % TS;
 
@@ -90,15 +95,25 @@ var mapa = [
         for (var i = 0; i < map_lines+1; i++) {
             for (var j = 0; j < map_collumns; j++) {
                 if (mapa[i][j] == 1) {
-                    //ctx.fillStyle = "lightgray";
-                    //ctx.fillRect(TS * j, TS * (i - 1) + Math.floor(TS_offset), TS, TS);
-                    ctx.drawImage(floor, TS * j, TS * (i - 1) + Math.floor(TS_offset), TS, TS);
+                    var actualFloor = 4/*floorDynamicDiscovery(map, i, j)*/;
+                    mapSprites.draw(ctx, "floor" + actualFloor, TS * j, TS * (i - 1) + Math.floor(TS_offset), TS, TS);
+                    //ctx.drawImage(floor, TS * j, TS * (i - 1) + Math.floor(TS_offset), TS, TS);
                 }
 
                 if (i == map_lines) {
-                    
-                    ctx.drawImage(lava[(Math.floor(lava_animation+j) % 4)], TS * j, TS * (i - 1), TS, TS);
+                    mapSprites.draw(ctx, "lava"+(Math.floor(lava_animation+j) % 4), TS * j, TS * (i - 1), TS, TS);
+                    //ctx.drawImage(lava[(Math.floor(lava_animation+j) % 4)], TS * j, TS * (i - 1), TS, TS);
                 }
             }
         }
     }
+        
+        
+}
+
+function floorDynamicDiscovery(map, i, j){
+    if(map[i-1][j] == 1){
+
+    }
+
+}
