@@ -50,24 +50,9 @@ var mapa = [
 
 
 function drawMap(dt) {
-    if(!mapSprites.isReady()){
-        //setTimeout(drawMap(dt), 0);
-    }else{
+    if(mapSprites.isReady()){
             bg_animation += dt;
 
-        /*if(Math.floor(bg_animation) % 4 == 1){
-            bg.src = "bg2.png";
-
-        } else if(Math.floor(bg_animation) % 4 == 2){
-            bg.src = "bg3.png";     
-
-        } else if(Math.floor(bg_animation) % 4 == 3){
-            bg.src = "bg2.png";            
-
-        } else if(Math.floor(bg_animation) % 4 == 0){
-            bg.src = "bg1.png";            
-        }*/
-//        ctx.drawImage(bg, 0, 0, tela.width, tela.height);
         mapSprites.draw(ctx, "bg"+(Math.floor(bg_animation) % 4 == 3 ? 1 : (Math.floor(bg_animation) % 4)), 0, 0, tela.width, tela.height);
 
         lava_animation += 4*dt;
@@ -79,9 +64,10 @@ function drawMap(dt) {
             /*Como as posições são deslocadas no mapa, é preciso atualizar a posição do player*/
             pc.y = pc.y + TS;
             pc.yi = pc.yi + 1;
-            if(pc.y > tela.height - TS){
+            if(pc.y > tela.height - TS && !game_over){
                 game_over = true;
                 console.log("game OVER!");
+                sounds.play("gameOver", 11000);
             }
 
             var new_line = mapa[map_lines]; /*TODO: criar a nova linha aleatoriamente, atualmente passa a de baixo pra cima, fazendo um cenário circular*/
