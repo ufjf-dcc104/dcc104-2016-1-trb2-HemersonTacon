@@ -4,6 +4,7 @@ var game_over = false;
 var sounds = new AudioResources(10);
 var last_key = 0;
 var jumplay = false;
+var pause = false;
 
 sounds.load("jump", "sounds/jump.wav");
 sounds.load("gameMusic", "sounds/fortress.wav");
@@ -11,13 +12,16 @@ sounds.load("gameOver", "sounds/gameover.wav");
 
 function passo() {
     var dt = 1 / 40;
-    drawMap(dt);
-    movePC(dt);
-    drawPC(dt);
-    if(jumplay){
-        sounds.play("jump", 500);    
-        jumplay = false;
+    if(!pause){
+        drawMap(dt);
+        movePC(dt);
+        drawPC(dt);
+        if(jumplay){
+            sounds.play("jump", 500);    
+            jumplay = false;
+        }    
     }
+    
     setTimeout(passo, dt * 1000);
 
     
@@ -39,6 +43,8 @@ document.addEventListener("keydown", function(e) {
                     jumplay = true;
                 }
                 break;
+            case 32:
+                pause = !pause;
         }
         last_key = e.keyCode;    
     }
