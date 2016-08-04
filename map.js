@@ -3,9 +3,10 @@ var map_lines = 18, map_collumns = 28;
 
 tela.width = map_collumns*TS;
 tela.height = map_lines*TS;
-var TS_offset = 0, TS_offset_speed = 10;
+var TS_offset = 1, TS_offset_speed = 10, TS_offset_acc = 2;
 
 var mapSprites = new ImageResources();
+var pts = 0;
 var i=0;
 
 for(; i<3; ++i){
@@ -51,22 +52,26 @@ var mapa = [
 
 function drawMap(dt) {
     if(mapSprites.isReady()){
-            bg_animation += dt;
+        bg_animation += dt;
 
         mapSprites.draw(ctx, "bg"+(Math.floor(bg_animation) % 4 == 3 ? 1 : (Math.floor(bg_animation) % 4)), 0, 0, tela.width, tela.height);
 
         lava_animation += 4*dt;
-
-        TS_offset = (TS_offset + TS_offset_speed*dt) % TS;
+        TS_offset_speed = TS_offset_speed + TS_offset_acc*dt;
+        TS_offset = (TS_offset + TS_offset_speed*dt) /*% TS*/;
+        //Quando a velocidade é muito grande,essa abordagem com módulo não traz o efeito esperado, pois é uma chamada, o mapa pode avançar mais de um tile
+        //console.log("ts acc: "+TS_offset_acc+"ts speed: " + TS_offset_speed+ "ts offset: "+ TS_offset)
 
         /*Empurra o mapa um tile pra cima quando o tile_offset alcança o tamanho do tile (quando isso acontece, tile_offset é zerado)*/
-        if(TS_offset == 0){
+        if(TS_offset / TS >= 1){
+            TS_offset = TS_offset % TS;
             /*Como as posições são deslocadas no mapa, é preciso atualizar a posição do player*/
+            pts++;
             pc.y = pc.y + TS;
             pc.yi = pc.yi + 1;
             if(pc.y > tela.height - TS && !game_over){
                 game_over = true;
-                console.log("game OVER!");
+                console.log("Game OVER! Pontuação: "+pts);
                 sounds.play("gameOver", 11000);
             }
 

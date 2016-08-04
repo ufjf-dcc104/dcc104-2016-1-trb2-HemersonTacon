@@ -115,7 +115,7 @@ function movePC(dt) {
             pc.y = 0;
         } else if(pc.y > tela.height - TS && !game_over){
             game_over = true;
-            console.log("game OVER!");
+            console.log("Game OVER! Pontuação: "+pts);
             sounds.play("gameOver", 11000);
         }
 

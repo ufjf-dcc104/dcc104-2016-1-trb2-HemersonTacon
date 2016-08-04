@@ -30,7 +30,7 @@ function passo() {
 }
 
 document.addEventListener("keydown", function(e) {
-    console.log("key code"+ e.keyCode);
+    //console.log("key code"+ e.keyCode);
     if(!game_over){
         switch (e.keyCode) {
             case 37:
@@ -54,7 +54,7 @@ document.addEventListener("keydown", function(e) {
                 if(!running){
                     max_speed = max_speed*2;
                     max_speed_y = max_speed_y * 1.2
-                    console.log("max speed:"+ max_speed);    
+                    //console.log("max speed:"+ max_speed);    
                     running = true;
                 }
                 
@@ -99,7 +99,7 @@ document.addEventListener("keyup", function(e) {
         case 90: // 'z' 
             max_speed = max_speed*1/2;
             max_speed_y = max_speed_y * 10/12;
-            console.log("max speed:"+ max_speed);
+            //console.log("max speed:"+ max_speed);
             running = false;
             break;
     }
