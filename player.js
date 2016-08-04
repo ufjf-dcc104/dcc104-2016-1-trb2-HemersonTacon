@@ -67,8 +67,8 @@ function drawPC(dt) {
         }
         
         
-        ctx.strokeStyle = "red";
-        ctx.strokeRect(pc.xi * TS, (pc.yi - 1) * TS + Math.floor(TS_offset), TS, TS);
+        //ctx.strokeStyle = "red";
+        //ctx.strokeRect(pc.xi * TS, (pc.yi - 1) * TS + Math.floor(TS_offset), TS, TS);
    }
     
 }
@@ -77,7 +77,7 @@ function movePC(dt) {
 
     if(!game_over){
         /*Atualizando atrito, sempre terá a direção contrária a velocidade*/
-        if(pc.vx < 0.01*max_speed && pc.vx > -0.01*max_speed){
+        if(pc.vx < 0.05*max_speed && pc.vx > -0.05*max_speed){
             friction = 0;
             pc.vx = 0;
         } else{

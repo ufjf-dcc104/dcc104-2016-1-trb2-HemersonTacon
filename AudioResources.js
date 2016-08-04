@@ -15,6 +15,14 @@ function AudioResources (numcanais){
     this.sons[key].load();
   }
 
+  this.setVolume  = function(key, vol){
+    this.sons[key].volume = vol;
+  }
+
+  this.setVolume  = function(key, vol){
+    this.sons[key].volume = vol;
+  }
+
   this.play = function (key, duration) {
       if(this.ativos[key]) return;
       if(duration){
